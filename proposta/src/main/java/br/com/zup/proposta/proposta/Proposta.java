@@ -2,7 +2,6 @@ package br.com.zup.proposta.proposta;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +22,6 @@ public class Proposta {
 	@NotBlank
 	private String documento;
 	
-	@Column(name = "NM_EMAIL", unique = true)
 	@Email
 	@NotBlank
 	private String email;
@@ -57,4 +55,9 @@ public class Proposta {
 		return id;
 	}
 
+	public String getDocumento() {
+		return documento;
+	}
+	
+	
 }

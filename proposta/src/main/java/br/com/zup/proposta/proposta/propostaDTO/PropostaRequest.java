@@ -47,6 +47,10 @@ public class PropostaRequest {
 	public String getDocumento() {
 		return documento;
 	}
+
+	public String getNome() {
+		return nome;
+	}	
 	
 	
 }

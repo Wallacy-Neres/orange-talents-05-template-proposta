@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-
+import br.com.zup.proposta.analise.SolicitacaoAnalise;
+import br.com.zup.proposta.analise.analiseDTO.AnalisePropostaRequest;
+import br.com.zup.proposta.analise.analiseDTO.ResultadoAnalise;
 import br.com.zup.proposta.proposta.propostaDTO.PropostaRequest;
 
 @RestController
@@ -24,15 +26,38 @@ public class PropostaController {
 	@Autowired
 	private PropostaRepository propostaRepository;
 	
+	@Autowired
+	private SolicitacaoAnalise analise;
+	
 	@PostMapping
 	public ResponseEntity<?> criarProposta(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder builder){
 		Proposta proposta = request.converte();
 		Optional<Proposta> documentoBanco = propostaRepository.findByDocumento(proposta.getDocumento());
+		
 		if(documentoBanco.isEmpty()) {
 			propostaRepository.save(proposta);
 			URI uri = builder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
+			AnalisePropostaRequest analiseRequest = analiseProposta(proposta);
+			
+			try {
+				ResultadoAnalise solicitacao = analise.solicitacao(analiseRequest);
+				solicitacao.getResultadoSolicitacao().equals("SEM_RESTRICAO");
+				proposta.setEstadoProposta("ELEGIVEL");
+				propostaRepository.save(proposta);
+			} catch (Exception e) {
+				e.printStackTrace();
+				proposta.setEstadoProposta("NAO_ELEGIVEL");
+				propostaRepository.save(proposta);
+			}
+			
 			return ResponseEntity.created(uri).build();
 		}
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 	}
+
+	private AnalisePropostaRequest analiseProposta(Proposta proposta) {
+		AnalisePropostaRequest analiseRequest = new AnalisePropostaRequest(proposta.getDocumento(), proposta.getNome(), proposta.getId().toString());
+		return analiseRequest;
+	}
+	
 }

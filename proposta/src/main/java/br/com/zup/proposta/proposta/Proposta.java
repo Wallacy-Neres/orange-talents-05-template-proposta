@@ -32,6 +32,8 @@ public class Proposta {
 	@NotBlank
 	private String endereco;
 	
+	private String estadoProposta;
+	
 	@Positive
 	@NotNull
 	private BigDecimal salario;
@@ -57,6 +59,18 @@ public class Proposta {
 
 	public String getDocumento() {
 		return documento;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public String getEstadoProposta() {
+		return estadoProposta;
+	}
+
+	public void setEstadoProposta(String estadoProposta) {
+		this.estadoProposta = estadoProposta;
 	}
 	
 	

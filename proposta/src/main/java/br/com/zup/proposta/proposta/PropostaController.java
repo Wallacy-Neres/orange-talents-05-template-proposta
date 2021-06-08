@@ -17,7 +17,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.zup.proposta.analise.SolicitacaoAnalise;
 import br.com.zup.proposta.analise.analiseDTO.AnalisePropostaRequest;
 import br.com.zup.proposta.analise.analiseDTO.ResultadoAnalise;
+import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
 import br.com.zup.proposta.proposta.propostaDTO.PropostaRequest;
+import feign.FeignException;
 
 @RestController
 @RequestMapping("proposta")
@@ -37,19 +39,19 @@ public class PropostaController {
 		if(documentoBanco.isEmpty()) {
 			propostaRepository.save(proposta);
 			URI uri = builder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
-			AnalisePropostaRequest analiseRequest = analiseProposta(proposta);
 			
 			try {
+				AnalisePropostaRequest analiseRequest = analiseProposta(proposta);
 				ResultadoAnalise solicitacao = analise.solicitacao(analiseRequest);
 				solicitacao.getResultadoSolicitacao().equals("SEM_RESTRICAO");
-				proposta.setEstadoProposta("ELEGIVEL");
+				proposta.setEstadoProposta(EstadoProposta.ELEGIVEL);
 				propostaRepository.save(proposta);
-			} catch (Exception e) {
+			} catch (FeignException e) {
 				e.printStackTrace();
-				proposta.setEstadoProposta("NAO_ELEGIVEL");
+				proposta.setEstadoProposta(EstadoProposta.NAO_ELEGIVEL);
 				propostaRepository.save(proposta);
 			}
-			
+		
 			return ResponseEntity.created(uri).build();
 		}
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();

@@ -3,6 +3,8 @@ package br.com.zup.proposta.proposta;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +12,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+
+import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
 
 
 @Entity
@@ -32,7 +36,8 @@ public class Proposta {
 	@NotBlank
 	private String endereco;
 	
-	private String estadoProposta;
+	@Enumerated(EnumType.STRING)
+	private EstadoProposta estadoProposta;
 	
 	@Positive
 	@NotNull
@@ -65,11 +70,11 @@ public class Proposta {
 		return nome;
 	}
 
-	public String getEstadoProposta() {
+	public EstadoProposta getEstadoProposta() {
 		return estadoProposta;
 	}
 
-	public void setEstadoProposta(String estadoProposta) {
+	public void setEstadoProposta(EstadoProposta estadoProposta) {
 		this.estadoProposta = estadoProposta;
 	}
 	

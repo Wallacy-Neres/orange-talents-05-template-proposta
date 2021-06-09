@@ -19,7 +19,6 @@ import br.com.zup.proposta.analise.analiseDTO.AnalisePropostaRequest;
 import br.com.zup.proposta.analise.analiseDTO.ResultadoAnalise;
 import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
 import br.com.zup.proposta.proposta.propostaDTO.PropostaRequest;
-import feign.FeignException;
 
 @RestController
 @RequestMapping("proposta")
@@ -46,7 +45,7 @@ public class PropostaController {
 				solicitacao.getResultadoSolicitacao().equals("SEM_RESTRICAO");
 				proposta.setEstadoProposta(EstadoProposta.ELEGIVEL);
 				propostaRepository.save(proposta);
-			} catch (FeignException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				proposta.setEstadoProposta(EstadoProposta.NAO_ELEGIVEL);
 				propostaRepository.save(proposta);

@@ -1,4 +1,4 @@
-package br.com.zup.proposta.analise.analiseDTO;
+package br.com.zup.proposta.analise;
 
 import org.springframework.boot.jackson.JsonComponent;
 

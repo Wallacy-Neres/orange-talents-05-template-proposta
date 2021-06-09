@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.zup.proposta.analise.AnalisePropostaRequest;
+import br.com.zup.proposta.analise.ResultadoAnalise;
 import br.com.zup.proposta.analise.SolicitacaoAnalise;
-import br.com.zup.proposta.analise.analiseDTO.AnalisePropostaRequest;
-import br.com.zup.proposta.analise.analiseDTO.ResultadoAnalise;
+import br.com.zup.proposta.cartao.CartaoRequest;
+import br.com.zup.proposta.cartao.RespostaCartao;
+import br.com.zup.proposta.cartao.SolicitacaoCartao;
 import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
 import br.com.zup.proposta.proposta.propostaDTO.PropostaRequest;
 
@@ -29,6 +32,9 @@ public class PropostaController {
 	
 	@Autowired
 	private SolicitacaoAnalise analise;
+	
+	@Autowired
+	private SolicitacaoCartao cartao;
 	
 	@PostMapping
 	public ResponseEntity<?> criarProposta(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder builder){

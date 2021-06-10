@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import br.com.zup.proposta.cartao.Cartao;
-import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
+import br.com.zup.proposta.proposta.propostaDTO.StatusProposta;
 
 
 @Entity
@@ -40,7 +40,7 @@ public class Proposta {
 	private String endereco;
 	
 	@Enumerated(EnumType.STRING)
-	private EstadoProposta estadoProposta;
+	private StatusProposta estadoProposta;
 	
 	@Positive
 	@NotNull
@@ -69,6 +69,10 @@ public class Proposta {
 		return id;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
 	public String getDocumento() {
 		return documento;
 	}
@@ -77,11 +81,11 @@ public class Proposta {
 		return nome;
 	}
 
-	public EstadoProposta getEstadoProposta() {
+	public StatusProposta getEstadoProposta() {
 		return estadoProposta;
 	}
 
-	public void setEstadoProposta(EstadoProposta estadoProposta) {
+	public void setEstadoProposta(StatusProposta estadoProposta) {
 		this.estadoProposta = estadoProposta;
 	}
 

@@ -17,12 +17,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.zup.proposta.analise.AnalisePropostaRequest;
 import br.com.zup.proposta.analise.ResultadoAnalise;
 import br.com.zup.proposta.analise.SolicitacaoAnalise;
-import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
+import br.com.zup.proposta.proposta.propostaDTO.StatusProposta;
 import br.com.zup.proposta.proposta.propostaDTO.PropostaRequest;
 
 @RestController
 @RequestMapping("proposta")
-public class PropostaController {
+public class CriarPropostaController {
 	
 	@Autowired
 	private PropostaRepository propostaRepository;
@@ -31,7 +31,7 @@ public class PropostaController {
 	private SolicitacaoAnalise analise;
 	
 	@PostMapping
-	public ResponseEntity<?> criarProposta(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder builder){
+	public ResponseEntity<PropostaRequest> criarProposta(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder builder){
 		Proposta proposta = request.converte();
 		Optional<Proposta> documentoBanco = propostaRepository.findByDocumento(proposta.getDocumento());
 		
@@ -43,12 +43,12 @@ public class PropostaController {
 				AnalisePropostaRequest analiseRequest = analiseProposta(proposta);
 				ResultadoAnalise solicitacao = analise.solicitacao(analiseRequest);
 				solicitacao.getResultadoSolicitacao().equals("SEM_RESTRICAO");
-				proposta.setEstadoProposta(EstadoProposta.ELEGIVEL);
+				proposta.setEstadoProposta(StatusProposta.ELEGIVEL);
 				
 				propostaRepository.save(proposta);
 			} catch (Exception e) {
 				e.printStackTrace();
-				proposta.setEstadoProposta(EstadoProposta.NAO_ELEGIVEL);
+				proposta.setEstadoProposta(StatusProposta.NAO_ELEGIVEL);
 				propostaRepository.save(proposta);
 			}
 		

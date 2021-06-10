@@ -17,9 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.zup.proposta.analise.AnalisePropostaRequest;
 import br.com.zup.proposta.analise.ResultadoAnalise;
 import br.com.zup.proposta.analise.SolicitacaoAnalise;
-import br.com.zup.proposta.cartao.CartaoRequest;
-import br.com.zup.proposta.cartao.RespostaCartao;
-import br.com.zup.proposta.cartao.SolicitacaoCartao;
 import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
 import br.com.zup.proposta.proposta.propostaDTO.PropostaRequest;
 
@@ -32,9 +29,6 @@ public class PropostaController {
 	
 	@Autowired
 	private SolicitacaoAnalise analise;
-	
-	@Autowired
-	private SolicitacaoCartao cartao;
 	
 	@PostMapping
 	public ResponseEntity<?> criarProposta(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder builder){
@@ -50,6 +44,7 @@ public class PropostaController {
 				ResultadoAnalise solicitacao = analise.solicitacao(analiseRequest);
 				solicitacao.getResultadoSolicitacao().equals("SEM_RESTRICAO");
 				proposta.setEstadoProposta(EstadoProposta.ELEGIVEL);
+				
 				propostaRepository.save(proposta);
 			} catch (Exception e) {
 				e.printStackTrace();

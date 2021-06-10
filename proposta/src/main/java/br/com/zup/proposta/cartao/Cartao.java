@@ -1,10 +1,17 @@
 package br.com.zup.proposta.cartao;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import br.com.zup.proposta.proposta.Proposta;
+
+@Entity
 public class Cartao {
 	
 	@Id
@@ -16,11 +23,47 @@ public class Cartao {
 	@NotNull
 	private String titular;
 	
-	private int limite;
+	@NotNull
+	private BigDecimal limite;
 	
+	@NotNull
+	@OneToOne
+	private Proposta proposta;
+	
+	@Deprecated
+	public Cartao() {
+		
+	}
 
-	
-	
-	
+
+	public Cartao(@NotBlank String id, @NotNull LocalDateTime emitidoEm, @NotNull String titular,
+			@NotNull BigDecimal limite, @NotNull Proposta proposta) {
+		super();
+		this.id = id;
+		this.emitidoEm = emitidoEm;
+		this.titular = titular;
+		this.limite = limite;
+		this.proposta = proposta;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public LocalDateTime getEmitidoEm() {
+		return emitidoEm;
+	}
+
+	public String getTitular() {
+		return titular;
+	}
+
+	public BigDecimal getLimite() {
+		return limite;
+	}
+
+	public Proposta getProposta() {
+		return proposta;
+	}
 	
 }

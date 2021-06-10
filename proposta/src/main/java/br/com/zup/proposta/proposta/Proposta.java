@@ -2,17 +2,20 @@ package br.com.zup.proposta.proposta;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.proposta.propostaDTO.EstadoProposta;
 
 
@@ -39,11 +42,12 @@ public class Proposta {
 	@Enumerated(EnumType.STRING)
 	private EstadoProposta estadoProposta;
 	
-	private String numeroCartao;
-	
 	@Positive
 	@NotNull
 	private BigDecimal salario;
+	
+	@OneToOne(cascade = CascadeType.MERGE)
+	private Cartao cartao;
 	
 	@Deprecated
 	public Proposta() {
@@ -58,6 +62,7 @@ public class Proposta {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.salario = salario;
+		
 	}
 
 	public Long getId() {
@@ -71,16 +76,6 @@ public class Proposta {
 	public String getNome() {
 		return nome;
 	}
-	
-	
-
-	public String getNumeroCartao() {
-		return numeroCartao;
-	}
-
-	public void setNumeroCartao(String numeroCartao) {
-		this.numeroCartao = numeroCartao;
-	}
 
 	public EstadoProposta getEstadoProposta() {
 		return estadoProposta;
@@ -88,6 +83,11 @@ public class Proposta {
 
 	public void setEstadoProposta(EstadoProposta estadoProposta) {
 		this.estadoProposta = estadoProposta;
+	}
+
+	public void adicionaCartao(Cartao cartao) {
+		this.cartao = cartao;
+		
 	}
 	
 	

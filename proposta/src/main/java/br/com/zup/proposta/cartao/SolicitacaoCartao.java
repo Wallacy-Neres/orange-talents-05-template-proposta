@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.zup.proposta.analise.AnalisePropostaRequest;
 
-@FeignClient(name = "cartao", url="http://localhost:8888")
+@FeignClient(name = "cartao", url="${servico.recurso.cartao}")
 public interface SolicitacaoCartao {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/api/cartoes", consumes = "application/json")

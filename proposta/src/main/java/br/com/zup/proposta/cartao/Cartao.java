@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
@@ -29,6 +31,9 @@ public class Cartao {
 	@NotNull
 	@OneToOne
 	private Proposta proposta;
+	
+	@Enumerated(EnumType.STRING)
+	private StatusCartao statusCartao = StatusCartao.NAO_BLOQUEADO;
 	
 	@Deprecated
 	public Cartao() {
@@ -66,4 +71,19 @@ public class Cartao {
 		return proposta;
 	}
 	
+	
+	
+	public StatusCartao getStatusCartao() {
+		return statusCartao;
+	}
+
+
+	public void setStatusCartao(StatusCartao statusCartao) {
+		this.statusCartao = statusCartao;
+	}
+
+
+	public boolean cartaoBloqueado() {
+		return this.statusCartao.equals(StatusCartao.BLOQUEADO);
+	}
 }

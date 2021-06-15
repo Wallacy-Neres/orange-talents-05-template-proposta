@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.proposta.analise.AnalisePropostaRequest;
 import br.com.zup.proposta.analise.ResultadoAnalise;
-import br.com.zup.proposta.analise.SolicitacaoAnalise;
+import br.com.zup.proposta.feign.SolicitacaoAnalise;
 import br.com.zup.proposta.proposta.propostaDTO.StatusProposta;
 import br.com.zup.proposta.proposta.propostaDTO.PropostaRequest;
 

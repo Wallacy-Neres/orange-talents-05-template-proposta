@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import br.com.zup.proposta.analise.AnalisePropostaRequest;
+import br.com.zup.proposta.feign.SolicitacaoCartao;
 import br.com.zup.proposta.proposta.Proposta;
 import br.com.zup.proposta.proposta.PropostaRepository;
 import feign.FeignException;

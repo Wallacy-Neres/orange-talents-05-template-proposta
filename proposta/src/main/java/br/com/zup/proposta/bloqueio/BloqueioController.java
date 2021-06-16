@@ -55,7 +55,6 @@ public class BloqueioController {
 		} catch (FeignClientException e) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
-		
 	}
 
 	private String pegaIpCliente(HttpServletRequest request) {

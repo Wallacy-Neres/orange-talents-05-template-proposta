@@ -8,13 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.zup.proposta.cartao.Cartao;
 import br.com.zup.proposta.cartao.CartaoRepository;
+import br.com.zup.proposta.feign.AvisoViagemNotifica;
 import br.com.zup.proposta.viagem.dto.AvisoViagemRequest;
+import br.com.zup.proposta.viagem.dto.NotificaViagemRequest;
+import br.com.zup.proposta.viagem.dto.ResultadoAvisoViagem;
+import feign.FeignException;
 
 @RestController
 @RequestMapping("viagem")
@@ -26,6 +29,9 @@ public class AvisoViagemController {
 	@Autowired
 	private AvisoViagemRepository viagemRepository;
 	
+	@Autowired
+	private AvisoViagemNotifica avisoViagemNotifica;
+	
 	@PostMapping("/{cartao}")
 	public ResponseEntity<?> criarAvisoViagem(HttpServletRequest request, @PathVariable String cartao,  @RequestBody  @Valid AvisoViagemRequest viagemRequestDTO){
 		Cartao cartaoAvisoViagem = cartaoRepository.findById(cartao);
@@ -33,12 +39,22 @@ public class AvisoViagemController {
 		if(cartaoAvisoViagem == null) {
 			return ResponseEntity.notFound().build();
 		}
-		String ipClient = pegaIpCliente(request);
-		String userAgent = request.getHeader("User-Agent");
-		AvisoViagem avisoViagem = viagemRequestDTO.converte(cartaoAvisoViagem, ipClient, userAgent);
-		viagemRepository.save(avisoViagem);
+	
+		try {
+			String ipClient = pegaIpCliente(request);
+			String userAgent = request.getHeader("User-Agent");
+			ResultadoAvisoViagem notificaViagem = avisoViagemNotifica.notificaViagem(cartaoAvisoViagem.getId(), new NotificaViagemRequest(viagemRequestDTO.getDestinoViagem(), viagemRequestDTO.getDataTerminoViagem()));
+			System.out.println(notificaViagem.getResultado());
+			AvisoViagem avisoViagem = viagemRequestDTO.converte(cartaoAvisoViagem, ipClient, userAgent);
+			viagemRepository.save(avisoViagem);
+			
+			return ResponseEntity.ok().build();
+		} catch (FeignException e) {
+			e.printStackTrace();
+			return ResponseEntity.unprocessableEntity().body("Não foi possivel realizar o aviso viagem");
+		}
+			
 		
-		return ResponseEntity.ok().build();
 	}
 	
 	private String pegaIpCliente(HttpServletRequest request) {

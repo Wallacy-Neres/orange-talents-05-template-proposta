@@ -18,6 +18,7 @@ import br.com.zup.proposta.cartao.CartaoRepository;
 import br.com.zup.proposta.carteira.dto.CarteiraAssociaRequest;
 import br.com.zup.proposta.carteira.dto.CarteriaRequest;
 import br.com.zup.proposta.feign.CarteiraSistemaCartoes;
+import feign.FeignException;
 
 @RestController
 @RequestMapping("carteira")
@@ -48,7 +49,8 @@ public class CarteiraController {
 			URI uri = builder.path("/carteira/{id}").buildAndExpand(carteira.getId()).toUri();
 			return ResponseEntity.created(uri).build();
 			
-		} catch (Exception e) {
+		} catch (FeignException e) {
+			e.printStackTrace();
 			return ResponseEntity.unprocessableEntity().body("Este cartão já está associado a está carteira");
 		}
 	}

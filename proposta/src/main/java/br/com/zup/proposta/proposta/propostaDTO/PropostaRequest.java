@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+
 import br.com.zup.proposta.config.validacao.ValidaCPFouCNPJValue.CPFOrCNPJ;
 import br.com.zup.proposta.proposta.Proposta;
 
@@ -51,6 +52,5 @@ public class PropostaRequest {
 	public String getNome() {
 		return nome;
 	}	
-	
 	
 }

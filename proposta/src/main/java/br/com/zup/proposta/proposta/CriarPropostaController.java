@@ -77,7 +77,7 @@ public class CriarPropostaController {
 	}
 
 	private AnalisePropostaRequest analiseProposta(Proposta proposta) {
-		AnalisePropostaRequest analiseRequest = new AnalisePropostaRequest(proposta.getDocumento(), proposta.getNome(), proposta.getId().toString());
+		AnalisePropostaRequest analiseRequest = new AnalisePropostaRequest(CriptografiaDeDocumentos.descriptografar(proposta.getDocumento()), proposta.getNome(), proposta.getId().toString());
 		return analiseRequest;
 	}
 	
